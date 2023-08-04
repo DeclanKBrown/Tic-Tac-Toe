@@ -40,11 +40,11 @@ header {
     border-radius: 0.3rem;
 }
 
-#x {
+#X {
     color: var(--x-color);
 }
 
-#o {
+#O {
     color: var(--o-color);
 }
 
@@ -74,6 +74,18 @@ main {
 
 .quadrant {
     background-color: var(--bg-color);
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    font-size: 10rem;
+}
+
+.mark-X {
+    color: var(--x-color);
+}
+
+.mark-O {
+    color: var(--o-color);
 }
 
 footer {
