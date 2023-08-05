@@ -23,8 +23,19 @@ const checkWinner = (() => {
         if (playing == 'true') {
             if (game.gameboard[1] == 'X' && game.gameboard[2] == 'X' && game.gameboard[3] == 'X' || game.gameboard[1] == 'O' && game.gameboard[2] == 'O' && game.gameboard[3] == 'O') {
                 playing = 'false';
-                console.log('winner');
-        }
+            }
+            if (game.gameboard[4] == 'X' && game.gameboard[4] == 'X' && game.gameboard[6] == 'X' || game.gameboard[4] == 'O' && game.gameboard[5] == 'O' && game.gameboard[6] == 'O') {
+                playing = 'false';
+            }
+            if (game.gameboard[7] == 'X' && game.gameboard[8] == 'X' && game.gameboard[9] == 'X' || game.gameboard[7] == 'O' && game.gameboard[8] == 'O' && game.gameboard[9] == 'O') {
+                playing = 'false';
+            }
+            if (game.gameboard[1] == 'X' && game.gameboard[5] == 'X' && game.gameboard[9] == 'X' || game.gameboard[1] == 'O' && game.gameboard[5] == 'O' && game.gameboard[9] == 'O') {
+                playing = 'false';
+            }
+            if (game.gameboard[3] == 'X' && game.gameboard[5] == 'X' && game.gameboard[7] == 'X' || game.gameboard[3] == 'O' && game.gameboard[5] == 'O' && game.gameboard[7] == 'O') {
+                playing = 'false';
+            }
         }
     }
     return {check};
