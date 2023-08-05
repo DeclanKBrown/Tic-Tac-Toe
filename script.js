@@ -17,46 +17,76 @@ const game = (() => {
     return {gameboard, gamePlaying};
 })();
 
+let token;
+let winner;
+let checker = false;
 //Get Winner Module 
 const checkWinner = (() => {
     const check = () => {
+        console.log(checker)
         if (playing == 'true') {
             if (game.gameboard[1] == 'X' && game.gameboard[2] == 'X' && game.gameboard[3] == 'X' || game.gameboard[1] == 'O' && game.gameboard[2] == 'O' && game.gameboard[3] == 'O') {
-                playing = 'false';
-                filter(1, 2, 3);
+                if (checker) {
+                    playing = 'false';
+                    filter(1, 2, 3);
+                }
+                winner = token === game.gameboard[1] ? 0 : 1;
             }
             else if (game.gameboard[4] == 'X' && game.gameboard[5] == 'X' && game.gameboard[6] == 'X' || game.gameboard[4] == 'O' && game.gameboard[5] == 'O' && game.gameboard[6] == 'O') {
-                playing = 'false';
-                filter(4, 5, 6);
+                if (!checker) {
+                    playing = 'false';
+                    filter(4, 5, 6);
+                }
+                winner = token === game.gameboard[4] ? 0 : 1;
 
             }
             else if (game.gameboard[7] == 'X' && game.gameboard[8] == 'X' && game.gameboard[9] == 'X' || game.gameboard[7] == 'O' && game.gameboard[8] == 'O' && game.gameboard[9] == 'O') {
-                playing = 'false';
-                filter(7, 8, 9);
+                if (!checker) {
+                    playing = 'false';
+                    filter(7, 8, 9);
+                }
+                winner = token === game.gameboard[7] ? 0 : 1;
+
             }
             else if (game.gameboard[1] == 'X' && game.gameboard[4] == 'X' && game.gameboard[7] == 'X' || game.gameboard[1] == 'O' && game.gameboard[4] == 'O' && game.gameboard[7] == 'O') {
-                playing = 'false';
-                filter(1, 4, 7);
+                if (!checker) {
+                    playing = 'false';
+                    filter(1, 4, 7);
+                }
+                winner = token === game.gameboard[1] ? 0 : 1;
             }
             else if (game.gameboard[2] == 'X' && game.gameboard[5] == 'X' && game.gameboard[8] == 'X' || game.gameboard[2] == 'O' && game.gameboard[5] == 'O' && game.gameboard[8] == 'O') {
-                playing = 'false';
-                filter(2, 5, 8);
+                if (!checker) {
+                    playing = 'false';
+                    filter(2, 5, 8);
+                }
+                winner = token === game.gameboard[2] ? 0 : 1;
             }
             else if (game.gameboard[3] == 'X' && game.gameboard[6] == 'X' && game.gameboard[9] == 'X' || game.gameboard[3] == 'O' && game.gameboard[6] == 'O' && game.gameboard[9] == 'O') {
-                playing = 'false';
-                filter(3, 6, 9);
+                if (!checker) {
+                    playing = 'false';
+                    filter(3, 6, 9);
+                }
+                winner = token === game.gameboard[3] ? 0 : 1;
             }
             else if (game.gameboard[1] == 'X' && game.gameboard[5] == 'X' && game.gameboard[9] == 'X' || game.gameboard[1] == 'O' && game.gameboard[5] == 'O' && game.gameboard[9] == 'O') {
-                playing = 'false';
-                filter(1, 5, 9);
+                if (!checker) {
+                    playing = 'false';
+                    filter(1, 5, 9);
+                }
+                winner = token === game.gameboard[1] ? 0 : 1;
             }
             else if (game.gameboard[3] == 'X' && game.gameboard[5] == 'X' && game.gameboard[7] == 'X' || game.gameboard[3] == 'O' && game.gameboard[5] == 'O' && game.gameboard[7] == 'O') {
-                playing = 'false';
-                filter(3, 5, 7);
+                if (!checker) {
+                    playing = 'false';
+                    filter(3, 5, 7);
+                }
+                winner = token === game.gameboard[3] ? 0 : 1;
             }
             else if (game.gameboard[1] != undefined && game.gameboard[2] != undefined && game.gameboard[3] != undefined && game.gameboard[4] != undefined && game.gameboard[5] != undefined && game.gameboard[6] != undefined && game.gameboard[7] != undefined && game.gameboard[8] != undefined && game.gameboard[9] != undefined) {
                 playing = 'false'
                 filterDraw();
+                winner = 2;
             }
         }
     }
@@ -117,7 +147,12 @@ const flow = (() => {
             playerTurn = 'player1'
         } else {
             playerTurn = 'player2'
-            comp.compChoice();
+            let diff = document.querySelector('#diff').value;
+            if (diff == 'impossible') {
+                comp.imposChoice();
+            } else {
+                comp.easyChoice();
+            }
         }
     }
     return {turn};
@@ -128,6 +163,7 @@ const choiceX = document.querySelector('#X');
 const choiceO = document.querySelector('#O');
 choiceX.addEventListener('click', () => {
     if (playing == '') {
+        token = 'X';
         if (choiceO.classList.contains('sel-o')) {
             choiceO.classList.remove('sel-o')
         }
@@ -137,6 +173,7 @@ choiceX.addEventListener('click', () => {
     }
 })
 choiceO.addEventListener('click', () => {
+    token = 'O';
     if (playing == '') {
         if (choiceX.classList.contains('sel-x')) {
             choiceX.classList.remove('sel-x')
@@ -187,7 +224,7 @@ board.forEach(quad => {
 
 //Computer choice module
 const comp = (() => {
-    const compChoice = () => {
+    const easyChoice = () => {
         let placed = 'false';
         while (placed == 'false') {
             let comp = Math.floor(Math.random() * (9) + 1);
@@ -199,8 +236,72 @@ const comp = (() => {
             }
         }
     }
-    return {compChoice};
+    const imposChoice = () => {
+        let bestScore = -Infinity;
+        let bestMove;
+        for (let i = 1; i <= 9; ++i) {
+            if (game.gameboard[i] == undefined) {
+                if (token == 'X') {
+                    game.gameboard[i] = 'O';
+                } else {
+                    game.gameboard[i] = 'X'
+                }
+                let score = minimax(game.gameboard[i], 0, false);
+                console.log(score)
+                game.gameboard[i] = undefined;
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = i;
+                }
+            }
+        }
+        player2.placeMarker(bestMove.toString());
+        placed = 'true';
+        checker = false;
+        flow.turn('player1');
+        checkWinner.check();
+    }
+    return {easyChoice, imposChoice};
 })();
+
+const scores = [10, -10, 0];
+
+function minimax(board, depth, maximizingPlayer) {
+    checker = true;
+    checkWinner.check()
+    let result = winner;
+    if (result !== undefined) {
+        console.log(winner)
+        return scores[winner];
+    }
+    if (maximizingPlayer) {
+        let bestScore = -Infinity
+        for (let i = 1; i <= 9; ++i) {
+            if (game.gameboard[i] == undefined) {
+                if (token == 'X') {
+                    game.gameboard[i] = 'O';
+                } else {
+                    game.gameboard[i] = 'X'
+                }
+                let score = minimax(board, depth + 1, false);
+                game.gameboard[i] = undefined;
+                bestScore = Math.max(bestScore, score);
+            }
+        }
+        return bestScore;          
+    } else {
+        let bestScore = Infinity
+        for (let i = 1; i <= 9; ++i) {
+            if (game.gameboard[i] == undefined) {
+                game.gameboard[i] = token;
+                let score = minimax(board, depth + 1, true);
+                game.gameboard[i] = undefined;
+                bestScore = Math.min(bestScore, score);
+            }
+        }
+        return bestScore;
+    }
+}
 
 const rstBtn = document.querySelector('#restart') 
 rstBtn.addEventListener('click', Restart);
