@@ -52,6 +52,18 @@ header {
     border: 1px solid var(--o-color);
 }
 
+#restart {
+    background-color: var(--btn-bg-color);
+    border: 1px solid var(--ol-color);
+    padding: 0.5em 1em;
+    border-radius: 0.3rem;
+}
+
+#restart svg {
+    width: 30px;
+    fill: var(--text-color);
+}
+
 #O {
     color: var(--o-color);
 }
@@ -88,29 +100,69 @@ main {
     font-size: 10rem;
 }
 
-.quad-filter {
-    filter: saturate(20%);
-    transition: all 0.5s;
+@keyframes place {
+    0% {
+        opacity: 0;
+        transform: scale(2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-.quad-filter-win {
-    filter: saturate(150%);
-    transform: scale(1.2);
-    transition: saturate 0.5s ease-in-out, transform 0.5s ease-in-out;
+@keyframes win {
+    0% {
+        filter: saturate(100%);
+        transform: scale(1);
+    }
+    100% {
+        filter: saturate(150%);
+        transform: scale(1.2);
+    }
 }
 
-.draw-filter {
-    filter: saturate(20%);
-    transform: scale(0.8);
-    transition: saturate 0.5s ease-in-out, transform 0.5s ease-in-out;
+@keyframes lose {
+    0% {
+        filter: saturate(100%);
+    }
+    100% {
+        filter: saturate(20%);
+        transform: scale(0.8);
+    }
+}
+
+@keyframes draw {
+    0% {
+        filter: saturate(100%);
+        transform: scale(1);
+    }
+    100% {
+        filter: saturate(20%);
+        transform: scale(0.8);
+    }
 }
 
 .mark-X {
     color: var(--x-color);
+    animation: place 0.35s cubic-bezier(0.550, 0.055, 0.675, 0.190) both;
 }
 
 .mark-O {
     color: var(--o-color);
+    animation: place 0.35s cubic-bezier(0.550, 0.055, 0.675, 0.190) both;
+}
+
+.quad-filter {
+    animation: lose 0.5s both;
+}
+
+.quad-filter-win {
+    animation: win 0.5s both;
+}
+
+.draw-filter {
+    animation: draw 0.5s both;
 }
 
 footer {

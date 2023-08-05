@@ -151,6 +151,10 @@ function disableDropdown() {
     const dropdown= document.getElementById('diff');
     dropdown.disabled = true;
 }
+function undisableDropdown() {
+    const dropdown= document.getElementById('diff');
+    dropdown.disabled = false;
+}
 
 //Event listener to place marker
 const board = document.querySelectorAll('.quadrant');
@@ -197,4 +201,22 @@ const comp = (() => {
     }
     return {compChoice};
 })();
+
+const rstBtn = document.querySelector('#restart') 
+rstBtn.addEventListener('click', Restart);
+//Restart Button
+function Restart() {
+    for (let i = 1; i <= 9; ++i) {
+        game.gameboard[i] = undefined;
+        let quad = document.getElementById(i);
+        quad.innerHTML = '';
+        quad.classList.remove('quad-filter');
+        quad.classList.remove('quad-filter-win');
+        quad.classList.remove('draw-filter');
+        quad.classList.remove('mark-X');
+        quad.classList.remove('mark-O');
+        playing = '';
+        undisableDropdown();
+    }
+}
 
